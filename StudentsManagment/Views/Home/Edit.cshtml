@@ -1,0 +1,210 @@
+﻿@model StudentsManagment.Models.student
+
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" id="studentForm">
+        <h4>Student</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Id, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.First_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.First_name, new { @class = "form-control", name = "First_name" })
+                @Html.ValidationMessageFor(model => model.First_name, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Last_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Last_name, new { @class = "form-control", name = "Last_name" })
+                @Html.ValidationMessageFor(model => model.Last_name, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date_of_birth, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Date_of_birth, null, new { @placeholder = "Date: MM-DD-yyyy", @class = "form-control", name = "Date_of_birth" })
+                @Html.ValidationMessageFor(model => model.Date_of_birth, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Student_id, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Student_id, new { @class = "form-control", name = "Student_id" })
+                @Html.ValidationMessageFor(model => model.Student_id, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control", id = "citySearch", name = "City" })
+                @Html.ValidationMessageFor(model => model.City, null, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, 8, 1, new { @class = "form-control", name = "Description" })
+                @Html.ValidationMessageFor(model => model.Description, null, new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-9 col-md-offset-3">
+                <div id="messages"></div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#studentForm').bootstrapValidator({
+            container: '#messages',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                First_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The first name is required and cannot be empty'
+                        },
+                        stringLength: {
+                            max: 20,
+                            min:2,
+                            message: 'The full name must be between 2-20 characters'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z\s]+$/i,
+                            message: 'The full name can consist of alphabetical english characters and spaces only'
+                        }
+
+
+                    }
+                },
+                Last_name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The last name is required and cannot be empty'
+                        },
+                        stringLength: {
+                            max: 20,
+                            min: 2,
+                            message: 'The full name must be between 2-20 characters'
+                        },
+                        regexp: {
+                            regexp: /^[a-zA-Z\s]+$/i,
+                            message: 'The full name can consist of alphabetical english characters and spaces only'
+                        }
+                    }
+                },
+                Date_of_birth: {
+                    validators: {
+                        notEmpty: {
+                            message: 'The birth date is required and cannot be empty'
+                        },
+                        date: {
+                            message: 'The date is not valid',
+                            format: 'MM-DD-YYYY'
+                        }
+                    }
+                },
+                Student_id: {
+                    validators:{
+                        notEmpty: {
+                            message: 'The Student id is required and cannot be empty'
+                        },
+                        regexp: {
+                            regexp: /^[0-9\b]+$/,
+                            message: 'The student id should conatin only digits'
+                        },
+                        stringLength: {
+                            max: 9,
+                            min: 9,
+                            message: 'The student id  must be 9 digits'
+                        }
+                    }
+                },
+                Description: {
+                    validators: {
+                        stringLength: {
+                            max: 1000,
+                            message: 'The description field should be less than 1000 characters '
+                        }
+                    }
+                }
+
+            }
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#citySearch").autocomplete({
+            source: function(request,response) {
+                $.ajax({
+                    url: "/Home/AutoCompleteCountry",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.CityName,
+                                value: item.CityName
+                            };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "No Results was found",
+                results: function (resultCount) {
+                    return resultCount + (resultCount > 1 ? ' results' : ' result ') + ' found';
+                }
+            }
+        });
+    })
+</script>
+
